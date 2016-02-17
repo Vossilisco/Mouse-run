@@ -2,13 +2,14 @@
 // UP: vale 1 |  DOWN: vale 2 | LEFT: vale 3 | RIGHT: vale 4 | BOMB: vale 5
 package mouserun.mouse;
 
+import java.util.HashMap;
 import mouserun.game.Grid;
 import mouserun.game.Mouse;
 import mouserun.game.Cheese;
 
 public class TonyWheel extends Mouse {
 
-    Casilla[][] mapa = new Casilla[100][100];
+    HashMap<String,Casilla> mapa;
 
     /*Constructor para dar nombre al raton*/
     public TonyWheel() {
@@ -30,11 +31,9 @@ public class TonyWheel extends Mouse {
     
     @Override
     public void newCheese() {
-        mapa = new Casilla[100][100];
     }
     @Override
     public void respawned() {
-        mapa = new Casilla[100][100];
     }
 
     /*Clase casilla heredada de Grid*/
@@ -45,8 +44,9 @@ public class TonyWheel extends Mouse {
 
         public Casilla(int x, int y) {
             super(x, y);
-            
-            //Detectamos si es un cruze de caminos (3 salidas)
+        }
+        //Detectamos si es un cruze de caminos (3 salidas)        
+        void piensaCruce(){
             //Si hay una sola pared a la IZQUIERDA
             if (this.canGoDown() && this.canGoRight() && this.canGoUp()) {
                 entrecamino = true;
@@ -68,8 +68,9 @@ public class TonyWheel extends Mouse {
                     }
                 }
             }
-            
-            //Detectamos si es un callejon cerrado
+    }
+        //Detectamos si es un callejon cerrado
+        void piensaSinsalida(){ 
             //Solo se puede ir para la IZQUIERDA
             if(!this.canGoDown() && !this.canGoRight() && !this.canGoUp()) sinsalida=true;
             //Solo se puede ir para la ABAJO
