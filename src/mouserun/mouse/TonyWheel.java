@@ -3,30 +3,60 @@
 package mouserun.mouse;
 
 import java.util.HashMap;
+import java.util.Stack;
 import mouserun.game.Grid;
 import mouserun.game.Mouse;
 import mouserun.game.Cheese;
 
 public class TonyWheel extends Mouse {
 
-    HashMap<String,Casilla> mapa;
+    HashMap<Integer,Grid> mapa;
+    Stack<Integer> memoria;
 
     /*Constructor para dar nombre al raton*/
     public TonyWheel() {
         super("TonyWheel");
+        mapa = new HashMap();
+        memoria = new Stack();
+    }
+    
+    private static int clavemapa(int x, int y) {
+        return (x * 100 + y);
     }
 
+    
     @Override
     public int move(Grid currentGrid, Cheese cheese) {
+        /*Si no conoce esta casilla, la guarda en la tabla*/
+        if (mapa.get(clavemapa(currentGrid.getX(), currentGrid.getY()))==null) mapa.put(clavemapa(currentGrid.getX(),currentGrid.getY()), currentGrid);
 
-        int ratonX = currentGrid.getX();
-        int ratonY = currentGrid.getY();
-        int quesoX = cheese.getX();
-        int quesoY = cheese.getY();
+        if (currentGrid.canGoDown() && (mapa.get(clavemapa(currentGrid.getX(), currentGrid.getY() - 1)) == null)) {
+            System.out.print("Voy pabajo ");
+
+            memoria.push(1);
+            return Mouse.DOWN;
+        }
+        if (currentGrid.canGoUp() && mapa.get(clavemapa(currentGrid.getX(), currentGrid.getY() + 1)) == null){
+            System.out.print("Voy parriba ");
+
+            memoria.push(2);
+            return Mouse.UP;
+        }    
+
+        if (currentGrid.canGoRight() && mapa.get(clavemapa(currentGrid.getX() +1, currentGrid.getY())) == null) {
+            System.out.print("Voy paladerecha ");
+            memoria.push(3);
+            return Mouse.RIGHT;
+        }
+        if (currentGrid.canGoLeft() && mapa.get(clavemapa(currentGrid.getX() -1, currentGrid.getY())) == null) {
+            System.out.print("Voy palaizquierda ");
+
+            memoria.push(4);
+            return Mouse.LEFT;
+        }
         
-       
-        
-        return Mouse.UP;
+        System.out.print("Para atras ;D\n");
+    return memoria.pop();
     }
     
     @Override
@@ -36,7 +66,7 @@ public class TonyWheel extends Mouse {
     public void respawned() {
     }
 
-    /*Clase casilla heredada de Grid*/
+    /*Clase casilla heredada de Grid
     public class Casilla extends Grid {
 
         public boolean entrecamino = false, sinsalida=false, nueva=true;
@@ -81,5 +111,5 @@ public class TonyWheel extends Mouse {
             if (this.canGoLeft() && this.canGoDown() && this.canGoRight()) sinsalida=true;
         }
     }
-
+*/
 }
