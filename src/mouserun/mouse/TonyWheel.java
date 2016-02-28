@@ -1,4 +1,4 @@
-// Codigo de cracks: M16B11
+// Codigo de grupo: M16B11
 // UP: vale 1 |  DOWN: vale 2 | LEFT: vale 3 | RIGHT: vale 4 | BOMB: vale 5
 package mouserun.mouse;
 
@@ -16,56 +16,59 @@ public class TonyWheel extends Mouse {
     /*Constructor para dar nombre al raton*/
     public TonyWheel() {
         super("TonyWheel");
-        mapa = new HashMap();
-        memoria = new Stack();
+        mapa = new HashMap<Integer,Grid>();
+        memoria = new Stack<Integer>();
     }
     
     private static int clavemapa(int x, int y) {
-        return (x * 100 + y);
+        return (x * 10000 + y);
     }
 
-    
     @Override
     public int move(Grid currentGrid, Cheese cheese) {
+        
+        Integer ratonX=currentGrid.getX();
+        Integer ratonY=currentGrid.getY();
+        
         /*Si no conoce esta casilla, la guarda en la tabla*/
-        if (mapa.get(clavemapa(currentGrid.getX(), currentGrid.getY()))==null) mapa.put(clavemapa(currentGrid.getX(),currentGrid.getY()), currentGrid);
+        if (mapa.get(clavemapa(ratonX, ratonY))==null){
+            incExploredGrids();
+            mapa.put(clavemapa(ratonX, ratonY), currentGrid);
+        }
 
-        if (currentGrid.canGoDown() && (mapa.get(clavemapa(currentGrid.getX(), currentGrid.getY() - 1)) == null)) {
-            System.out.print("Voy pabajo ");
-
+        if (currentGrid.canGoDown() && (mapa.get(clavemapa(ratonX, ratonY - 1)) == null)) {
             memoria.push(1);
             return Mouse.DOWN;
         }
-        if (currentGrid.canGoUp() && mapa.get(clavemapa(currentGrid.getX(), currentGrid.getY() + 1)) == null){
-            System.out.print("Voy parriba ");
-
+        if (currentGrid.canGoUp() && mapa.get(clavemapa(ratonX, ratonY + 1)) == null){
             memoria.push(2);
             return Mouse.UP;
         }    
 
-        if (currentGrid.canGoRight() && mapa.get(clavemapa(currentGrid.getX() +1, currentGrid.getY())) == null) {
-            System.out.print("Voy paladerecha ");
+        if (currentGrid.canGoRight() && mapa.get(clavemapa(ratonX +1, ratonY)) == null) {
             memoria.push(3);
             return Mouse.RIGHT;
         }
-        if (currentGrid.canGoLeft() && mapa.get(clavemapa(currentGrid.getX() -1, currentGrid.getY())) == null) {
-            System.out.print("Voy palaizquierda ");
-
+        if (currentGrid.canGoLeft() && mapa.get(clavemapa(ratonX -1, ratonY)) == null) {
             memoria.push(4);
             return Mouse.LEFT;
         }
         
-        System.out.print("Para atras ;D\n");
     return memoria.pop();
     }
     
     @Override
     public void newCheese() {
+        mapa = new HashMap<Integer,Grid>();
+        memoria = new Stack<Integer>();
     }
     @Override
     public void respawned() {
     }
 
+    
+    //EN CONSTRUCCION
+    
     /*Clase casilla heredada de Grid
     public class Casilla extends Grid {
 
