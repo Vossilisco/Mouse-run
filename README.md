@@ -1,4 +1,6 @@
 # Mouse-run
-Practica 1 para Inteligencia artificial
+Practice 1 ,to Artificial intelligence
 
-La prática se basa en la creación de una inteligencia artificial que representará un ratón, con el objetivo de encontrar la mayor cantidad de quesos posible, aqui el enlace directo al codigo de mi raton:[TonyWheel.java](src/mouserun/mouse/TonyWheel.java)
+The first practice we should make an artificial intellifence that will represented by a mouse, to find the biggest
+number of cheeses, but this one is just to develop and strategy to exploring, never getting stuck or making cycles.
+Here you  have an direct link with my  mouse's code::[TonyWheel.java](src/mouserun/mouse/TonyWheel.java)
